@@ -182,16 +182,19 @@ def fitting(device,
     """
 
     from tqdm import tqdm
-    
+
+    # SB: Step 1: storing the training and validation losses per epoch    
     history = {}
     history["train_loss"] = []
     
     if val_dl:
         history["val_loss"] = []
     
-    model.to(device)
+    model.to(device) # SB: Step 2: moving the model to the correct device
+
     print(f"INFO: The model is assigned to device: {device} ")
 
+    # SB: Step 3: Prepare scheduler & early stopper
     if scheduler is not None:
         print(f"INFO: The following schedulers are going to be used:")
         for sch in scheduler:
@@ -199,29 +202,44 @@ def fitting(device,
 
     print(f"INFO: Training start")
 
+    # SB: early stop is to monitor the validation loss and
+    #     stops training if it stops improving
     if if_early_stop: 
         early_stopper = EarlyStopper(patience=patience,min_delta=0)
         print("INFO: Early-Stopper prepared")
 
+    # SB: Step 4:
     for epoch in range(Epoch):
+
         #####
         #Training step
         #####
-        model.train()
+
+        model.train() # switch to training mode 
+
         loss_val = 0; num_batch = 0
-        for batch in tqdm(dl):
-            x, y = batch
+
+        for batch in tqdm(dl): # tdqm is a progress bar library: shows how far a loop has progressed
+            # dl is the pytorch data loader
+
+            x, y = batch # get the x input sequences and y (next-step latent target)
+
             x = x.to(device).float(); y =y.to(device).float()
+
             optimizer.zero_grad()
             
-            pred = model(x)
+            pred = model(x) # model(x) calls model.forward(x)
+
+            # compute losses across all sequences and latent variables across the batch
             loss = loss_fn(pred,y)
+
+            # backpropagate the loss
             loss.backward()
+
+            # update the weights 
             optimizer.step()
 
-            
-
-            loss_val += loss.item()/x.shape[0]
+            loss_val += loss.item()/x.shape[0] # average loss per element
             num_batch += 1
 
         history["train_loss"].append(loss_val/num_batch)

@@ -42,12 +42,13 @@ if __name__ == "__main__":
 
 
     ## POD
-    if args.pod:
-        POD = POD.POD(datafile, n_test=bvae.config.n_test, re=args.re,
-                    path='res/', n_modes=10, delta_t=bvae.config.delta_t)
-        POD.load_data()
-        POD.get_POD()
-        POD.eval_POD()
+# *SB*:
+#    if args.pod:
+#        POD = POD.POD(datafile, n_test=bvae.config.n_test, re=args.re,
+#                    path='res/', n_modes=10, delta_t=bvae.config.delta_t)
+#        POD.load_data()
+#        POD.get_POD()
+#        POD.eval_POD()
 
     # Time-series prediction runner 
     lruner = latentRunner(args.nn,device)
@@ -59,7 +60,10 @@ if __name__ == "__main__":
         lruner.train()
         lruner.infer(args.t)
 
+
     vis_bvae(init.pathsBib.res_path + "modes_" + bvae.filename + ".hdf5",
+
             init.pathsBib.log_path + bvae.filename)
-    vis_pod(POD)
+# *SB*:
+#    vis_pod(POD)
     vis_temporal_Prediction(model_type=args.nn, predictor=lruner, vae=bvae)

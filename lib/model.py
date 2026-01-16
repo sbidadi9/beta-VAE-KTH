@@ -39,7 +39,7 @@ def get_predictors(name):
         config      : (class) The configuration of the model 
     """
 
-    assert(name=="self" or name == "easy" or name == "lstm"), print("ERROR: Given Name is not Valid!")
+    assert(name=="self" or name == "easy" or name == "lstm" or name == 'mlp'), print("ERROR: Given Name is not Valid!")
 
     if name == "easy":
         from configs.easyAttn       import easyAttn_config as cfg
@@ -108,11 +108,30 @@ def get_predictors(name):
         print(f"LSTM has been generated")
         print(f"FileName: {filename}")
         return model, filename, cfg
-    
+
+# *SB*:
+    elif name == "mlp":
+        from configs.mlp import mlp_config as cfg
+        from configs.nomenclature import Make_MLP_Name
+        from nns.MLP import MLP
+
+        try:
+            model = MLP(
+                                        nmode = cfg.nmode, 
+                                        hidden_size = cfg.hidden_dim, 
+                                        num_layer = cfg.num_layer, 
+                                        out_dim = cfg.next_step
+                       )
+
+        except:
+            print("ERROR: Parameter NOT MATCHED!")
+            exit()
+            
+        filename = Make_MLP_Name(cfg)
+        return model, filename, cfg
+
     else:
 
         print(f"Error: There is no options!")
         exit()
-
-
 

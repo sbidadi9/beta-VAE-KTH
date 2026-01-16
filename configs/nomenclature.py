@@ -86,5 +86,26 @@ def Make_LSTM_Name(cfg):
     
     return case_name
 
+# *SB*:
+def Make_MLP_Name(cfg):
+    """
+    A function to name the MLP predictor checkpoint
 
-
+    Args: 
+        cfg: A class of MLP model configuration
+    
+    Returns:
+        name: A string for MLP model
+    """
+    
+    case_name = f"MLP_"+\
+                f"{cfg.next_step}next_"+\
+                f"{cfg.nmode}dim_"+\
+                f"{cfg.hidden_size}hidden_"+\
+                f"{cfg.num_layer}nlayer_"+\
+                f"{cfg.Epoch}Epoch_"+\
+                f"{cfg.num_train}N_"+\
+                f"{cfg.early_stop}ES_"+\
+                f"{cfg.patience}P"
+    
+    return case_name
