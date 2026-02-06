@@ -474,7 +474,7 @@ class latentRunner(nn.Module):
         assert(model_type in model_type_all), print('ERROR: No type of the model matched')
 
         if      model_type == 'pre':    model_path = pathsBib.pretrain_path + self.filename               + self.fmat
-        elif    model_type == 'val' :   model_path = pathsBib.chekp_path    + self.filename + '_bestVal'  + self.fmat
+        elif    model_type == 'val' :   model_path = pathsBib.chekp_path    + self.filename + self.fmat
         elif    model_type == 'final' : model_path = pathsBib.chekp_path    + self.filename + '_final'    + self.fmat
         try:
             ckpoint = torch.load(model_path, map_location= self.device)

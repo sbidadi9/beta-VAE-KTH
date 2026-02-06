@@ -118,9 +118,8 @@ def get_predictors(name):
         try:
             model = MLP(
                                         nmode = cfg.nmode, 
-                                        hidden_size = cfg.hidden_dim, 
-                                        num_layer = cfg.num_layer, 
-                                        out_dim = cfg.next_step
+                                        hidden_size = cfg.hidden_size, 
+                                        num_layer = cfg.num_layer
                        )
 
         except:
@@ -134,4 +133,3 @@ def get_predictors(name):
 
         print(f"Error: There is no options!")
         exit()
-
